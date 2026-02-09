@@ -6,6 +6,7 @@ Project structure:
 
 - `index.html` — main landing page.
 - `content/` — playlist/songs pages.
+- `audio/` — song files.
 
 Usage
 -----
