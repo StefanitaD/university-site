@@ -5,6 +5,8 @@
   <title>Workout Mix - Local Music Streamer</title>
   <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
   <link rel="stylesheet" href="../styles/playlist-workout.css">
+  <link rel="stylesheet" href="../styles/index.css">
+  <script src="../js/player-playlist.js"></script>
 </head>
 <body>
   <header>
@@ -21,11 +23,8 @@
           <h2>Navigation</h2>
           
           <h3>Songs</h3>
-          <ul>
-            <li><a href="song1.html">monplaisir - calamity kick</a></li>
-            <li><a href="song2.html">monplaisir - lalalatown</a></li>
-            <li><a href="song3.html">monplaisir - sf isnt a lie</a></li>
-            <li><a href="song4.html">monplaisir - sunset pink clouds</a></li>
+          <ul id="songList">
+            <!-- Dynamically populated by JavaScript -->
           </ul>
 
           <h3>Playlists</h3>
@@ -45,24 +44,33 @@
           </section>
 
           <section>
-            <h2>Songs in This Playlist</h2>
-            
+            <h2>Now Playing</h2>
             <article>
-              <h3>monplaisir - lalalatown</h3>
-              <p>Upbeat pop energy</p>
-              <audio controls>
-                <source src="../audio/monplaisir - lalalatown.ogg" type="audio/ogg">
+              <h3 id="currentSongTitle">Welcome to Workout Mix</h3>
+              <p id="currentSongArtist">Select a song to start playing</p>
+              
+              <!-- Audio Element (hidden, controlled by JavaScript) -->
+              <audio id="audioPlayer" preload="metadata">
                 Your browser does not support the audio element.
               </audio>
-            </article>
 
-            <article>
-              <h3>monplaisir - sf isnt a lie</h3>
-              <p>Pumped-up electronic beats</p>
-              <audio controls>
-                <source src="../audio/monplaisir - sf isnt a lie.ogg" type="audio/ogg">
-                Your browser does not support the audio element.
-              </audio>
+              <!-- Player Controls -->
+              <div class="player-controls">
+                <button id="prevBtn" class="control-btn">⏮ Previous</button>
+                <button id="playBtn" class="control-btn primary">▶ Play</button>
+                <button id="pauseBtn" class="control-btn primary" style="display: none;">⏸ Pause</button>
+                <button id="nextBtn" class="control-btn">Next ⏭</button>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="progress-container">
+                <input type="range" id="progressBar" class="progress-bar" min="0" max="100" value="0">
+              </div>
+
+              <!-- Time Display -->
+              <div class="time-display">
+                <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+              </div>
             </article>
           </section>
         </main>
