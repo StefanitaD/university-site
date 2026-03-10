@@ -4,9 +4,11 @@ A small static website for playlists and song pages used for an university proje
 
 Project structure:
 
-- `index.html` — main landing page.
-- `content/` — playlist/songs pages.
-- `audio/` — song files.
+- `index.html` - main landing page.
+- `pages/` - playlist/songs pages.
+- `styles/` - css files.
+- `js/` - javascript code.
+- `assets/audio/` - song files.
 
 Usage
 -----

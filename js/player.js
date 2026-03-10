@@ -26,11 +26,11 @@ const songs = [
   }
 ];
 
-// Player State
+// player state
 let currentSongIndex = 0;
 let isPlaying = false;
 
-// DOM Elements (will be initialized when DOM is ready)
+// DOM Elements
 let audioPlayer;
 let playBtn;
 let pauseBtn;
@@ -43,7 +43,7 @@ let progressBar;
 let currentTimeDisplay;
 let durationDisplay;
 
-// Initialize DOM References
+// DOM References
 function initDOMElements() {
   audioPlayer = document.getElementById('audioPlayer');
   playBtn = document.getElementById('playBtn');
@@ -58,7 +58,7 @@ function initDOMElements() {
   durationDisplay = document.getElementById('duration');
 }
 
-// Initialize Player
+// init player
 function initPlayer() {
   initDOMElements();
   loadSong(currentSongIndex);
@@ -66,7 +66,7 @@ function initPlayer() {
   attachEventListeners();
 }
 
-// Load Song
+// load song
 function loadSong(index) {
   const song = songs[index];
   audioPlayer.src = song.file;
@@ -74,14 +74,14 @@ function loadSong(index) {
   highlightCurrentSong();
 }
 
-// Update Now Playing Display
+// update "Now Playing" 
 function updateNowPlaying() {
   const song = songs[currentSongIndex];
   currentSongTitle.textContent = song.title;
   currentSongArtist.textContent = song.artist;
 }
 
-// Highlight Current Song in List
+// highlight current song in sidebar
 function highlightCurrentSong() {
   const songItems = document.querySelectorAll('.song-item');
   songItems.forEach((item, index) => {
@@ -92,7 +92,7 @@ function highlightCurrentSong() {
   });
 }
 
-// Render Song List
+// display song list
 function renderSongList() {
   songList.innerHTML = '';
   songs.forEach((song, index) => {
@@ -111,14 +111,14 @@ function renderSongList() {
   });
 }
 
-// Play Function
+// Play
 function play() {
   audioPlayer.play();
   isPlaying = true;
   updatePlayPauseButtons();
 }
 
-// Pause Function
+// Pause 
 function pause() {
   audioPlayer.pause();
   isPlaying = false;
@@ -139,7 +139,7 @@ function prevSong() {
   play();
 }
 
-// Update Play/Pause Button States
+// Update Play/Pause Button
 function updatePlayPauseButtons() {
   if (isPlaying) {
     playBtn.style.display = 'none';

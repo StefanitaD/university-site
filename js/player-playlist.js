@@ -1,4 +1,4 @@
-// All Available Songs
+// Song Database
 const allSongs = [
   {
     id: 1,
