@@ -25,6 +25,33 @@ npm start
 
 3. Open `http://localhost:3000` in your browser.
 
+Start/Stop Server
+-----------------
+
+To start the project server:
+
+```bash
+cd "..\university-site"
+npm start
+```
+
+Or:
+
+```bash
+node server.js
+```
+
+To stop the server:
+
+- Press `Ctrl+C` in the terminal where it is running.
+- If the process is detached, find and kill it by PID:
+
+  - Windows:
+    ```bash
+tasklist /FI "IMAGENAME eq node.exe" 
+ntaskkill /PID <PID> /F
+```
+
 API Endpoints
 -------------
 
