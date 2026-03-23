@@ -47,10 +47,11 @@ To stop the server:
 - If the process is detached, find and kill it by PID:
 
   - Windows:
-    ```bash
+```bash
 tasklist /FI "IMAGENAME eq node.exe" 
 ntaskkill /PID <PID> /F
 ```
+
 
 API Endpoints
 -------------
