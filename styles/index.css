@@ -177,6 +177,26 @@ table tr:hover {
   background-color: #191919;
 }
 
+/* Drag & Drop Upload Zone */
+.drop-zone {
+  border: 2px dashed #4CAF50;
+  background: #181818;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  color: #b0b0b0;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  white-space: pre-line;
+}
+
+.drop-zone.dragover {
+  border-color: #8bc34a;
+  background-color: #202020;
+  color: #ffffff;
+}
+
 /* Smooth color change for header/footer links */
 header a,
 footer a {

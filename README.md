@@ -35,9 +35,14 @@ API Endpoints
 - `GET /api/playlists` → playlists + song membership
 - `GET /api/playlists/:name` → named playlist songs
 - `GET /api/audio/:id` → stream audio file
+- `POST /api/upload` → upload audio files (multipart/form-data `files`)
 
 The UI now loads songs from the API and plays via `/api/audio/:id`.
 
+Drag & Drop Upload
+------------------
+
+On each page, there is a drag-and-drop uploader in the left navigation. You can drag your local audio files and drop them there, or click to use the file picker. Files are saved to `assets/audio` and automatically added to the database.
 Legacy static-use note:
 
 If you still need quick static-view mode, you can run:

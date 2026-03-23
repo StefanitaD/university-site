@@ -14,6 +14,8 @@ let songList;
 let progressBar;
 let currentTimeDisplay;
 let durationDisplay;
+let dropZone;
+let fileInput;
 
 function getPlaylistType() {
   const currentPage = window.location.pathname.toLowerCase();
@@ -35,6 +37,70 @@ function initDOMElements() {
   progressBar = document.getElementById('progressBar');
   currentTimeDisplay = document.getElementById('currentTime');
   durationDisplay = document.getElementById('duration');
+  dropZone = document.getElementById('dropZone');
+  fileInput = document.getElementById('fileInput');
+}
+
+function initUploadZone() {
+  if (!dropZone || !fileInput) return;
+
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+    dropZone.textContent = 'Release to upload the files';
+  });
+
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+    dropZone.textContent = 'Drag and drop audio files here\nor click to select files';
+  });
+
+  dropZone.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter((file) => file.type.startsWith('audio/'));
+    if (!files.length) {
+      dropZone.textContent = 'Only audio files are supported';
+      return;
+    }
+    await uploadFiles(files);
+  });
+
+  dropZone.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', async () => {
+    if (fileInput.files.length === 0) return;
+    const files = Array.from(fileInput.files).filter((file) => file.type.startsWith('audio/'));
+    await uploadFiles(files);
+    fileInput.value = '';
+  });
+}
+
+async function uploadFiles(files) {
+  const formData = new FormData();
+  files.forEach((file) => formData.append('files', file));
+
+  try {
+    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+    if (!res.ok) {
+      throw new Error(`Upload failed (${res.status})`);
+    }
+    const result = await res.json();
+    dropZone.textContent = `Uploaded ${result.uploaded} file(s).`; 
+    await refreshSongs();
+  } catch (err) {
+    dropZone.textContent = `Upload error: ${err.message}`;
+  }
+}
+
+async function refreshSongs() {
+  songs = await fetchSongs();
+  if (songs.length === 0) return;
+  currentSongIndex = 0;
+  loadSong(currentSongIndex);
+  renderSongList();
 }
 
 async function fetchSongs() {
@@ -52,6 +118,8 @@ async function fetchSongs() {
 
 async function initPlayer() {
   initDOMElements();
+  initUploadZone();
+
   songs = await fetchSongs();
   if (!songs.length) {
     currentSongTitle.textContent = 'No songs found';
@@ -166,6 +234,14 @@ function updateProgressBar() {
 
 function updateTimeDisplay() {
   currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+  durationDisplay.textContent = formatTime(audioPlayer.duration);
+}
+
+function updateDuration() {
+  if (!audioPlayer.duration) {
+    durationDisplay.textContent = '0:00';
+    return;
+  }
   durationDisplay.textContent = formatTime(audioPlayer.duration);
 }
 

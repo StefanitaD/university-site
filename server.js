@@ -1,9 +1,19 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const multer = require('multer');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, 'assets', 'audio')),
+  filename: (req, file, cb) => {
+    // keep original name, sanitize basic chars
+    const name = file.originalname.replace(/[^a-zA-Z0-9._\- ]/g, '_');
+    cb(null, name);
+  }
+});
+const upload = multer({ storage });
 const PORT = process.env.PORT || 3000;
 const audioDir = path.join(__dirname, 'assets', 'audio');
 const dbPath = path.join(__dirname, 'data', 'music.db');
@@ -249,6 +259,27 @@ app.post('/api/playlists/:id/songs', (req, res) => {
       res.json({ updated: songIds.length });
     });
   });
+});
+
+app.post('/api/upload', upload.array('files'), async (req, res) => {
+  if (!req.files || req.files.length === 0) return res.status(400).json({ error: 'No files uploaded' });
+
+  const added = [];
+  for (const file of req.files) {
+    const parsed = parseSongFilename(file.filename);
+    await new Promise((resolve) => {
+      db.run('INSERT OR IGNORE INTO songs (title, artist, file_path) VALUES (?, ?, ?)', [parsed.title, parsed.artist, parsed.file_path], function (err) {
+        if (err) {
+          console.error('DB insert error on upload', err);
+        } else if (this.changes > 0) {
+          added.push(file.filename);
+        }
+        resolve();
+      });
+    });
+  }
+
+  res.json({ uploaded: req.files.length, added });
 });
 
 app.get('/api/audio/:id', (req, res) => {
